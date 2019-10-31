@@ -1,0 +1,27 @@
+--HOSTS
+INSERT INTO "HOSTS" (host_id, host_name) VALUES(host_id_seq.nextval, 'Brad Anderson');
+INSERT INTO "HOSTS" (host_id, host_name) VALUES(host_id_seq.nextval, 'Priyanka Ranade');
+INSERT INTO "HOSTS" (host_id, host_name) VALUES(host_id_seq.nextval, 'Venkata Sai Sindhuja Chidipothu');
+INSERT INTO "HOSTS" (host_id, host_name) VALUES(host_id_seq.nextval, 'Kajal Pansare');
+INSERT INTO "HOSTS" (host_id, host_name) VALUES(host_id_seq.nextval, 'George Karabatis');
+
+--GUESTS
+INSERT INTO "GUESTS" (guest_id, guest_name, host_id) VALUES(GUEST_ID_SEQ.nextval, 'Max Smith', 3);
+INSERT INTO "GUESTS" (guest_id, guest_name, host_id) VALUES(GUEST_ID_SEQ.nextval, 'Eric Johnson', 4);
+INSERT INTO "GUESTS" (guest_id, guest_name, host_id) VALUES(GUEST_ID_SEQ.nextval, 'Larry Allen', 3);
+INSERT INTO "GUESTS" (guest_id, guest_name, host_id) VALUES(GUEST_ID_SEQ.nextval, 'John Perry', 1);
+INSERT INTO "GUESTS" (guest_id, guest_name, host_id) VALUES(GUEST_ID_SEQ.nextval, 'Robert Cooper', 5);
+
+--ROOM_TYPE
+INSERT INTO "ROOM_TYPE" (room_id, room_type, room_capacity, room_price) VALUES(room_id_seq.nextval, 'Small room', 100, 500);
+INSERT INTO "ROOM_TYPE" (room_id, room_type, room_capacity, room_price) VALUES(room_id_seq.nextval, 'Medium room', 250, 1000);
+INSERT INTO "ROOM_TYPE" (room_id, room_type, room_capacity, room_price) VALUES(room_id_seq.nextval, 'Large room', 500, 2000);
+
+--SERVICES
+INSERT INTO "SERVICES" (service_id, service_type, service_price, per_person_or_event) VALUES (service_id_seq.nextval, 'Breakfast', 10, 'person');
+INSERT INTO "SERVICES" (service_id, service_type, service_price, per_person_or_event) VALUES (service_id_seq.nextval, 'Lunch', 20,' person');
+INSERT INTO "SERVICES" (service_id, service_type, service_price, per_person_or_event) VALUES (service_id_seq.nextval, 'DJ', 500, 'event');
+INSERT INTO "SERVICES" (service_id, service_type, service_price, per_person_or_event) VALUES (service_id_seq.nextval, 'Singer', 2000, 'event');
+INSERT INTO "SERVICES" (service_id, service_type, service_price, per_person_or_event) VALUES (service_id_seq.nextval, 'Pop Band', 10000, 'event');
+
+

@@ -1,0 +1,206 @@
+drop table event_reservation cascade constraints;
+drop table event_type cascade constraints;
+drop table guests cascade constraints;
+drop table hosts cascade constraints;
+drop table hotel cascade constraints;
+drop table invoice cascade constraints;
+drop table room_type cascade constraints;
+drop table services cascade constraints;
+drop table services_for_events cascade constraints;
+drop table event_rooms cascade constraints;
+drop sequence guest_id_seq;
+drop sequence host_id_seq;
+drop sequence hotel_id_seq;
+drop sequence room_id_seq;
+drop sequence service_id_seq;
+
+--------------------------------------------------------
+--  DDL for Table EVENT_RESERVATION
+--------------------------------------------------------
+
+  CREATE TABLE "EVENT_RESERVATION" 
+   (	"EVENT_RESERVATION_ID" NUMBER(*,0), 
+	"HOTEL_ID" NUMBER(*,0), 
+	"HOST_ID" NUMBER(*,0), 
+	"START_DATE" DATE, 
+	"END_DATE" DATE, 
+	"DATE_OF_RESERVATION" DATE, 
+	"NUM_SMALL_ROOMS" NUMBER(*,0), 
+	"NUM_MEDIUM_ROOMS" NUMBER(*,0), 
+	"NUM_LARGE_ROOMS" NUMBER(*,0), 
+	"DISCOUNT" NUMBER(*,0), 
+	"NUM_OF_GUESTS" NUMBER(*,0), 
+	"EVENT_ID" NUMBER(*,0),
+        "EVENT_RESERVATION_STATUS" VARCHAR2(20)
+   );
+--------------------------------------------------------
+--  DDL for Table EVENT_TYPE
+--------------------------------------------------------
+
+  CREATE TABLE "EVENT_TYPE" 
+   (	"EVENT_ID" NUMBER(*,0), 
+	"EVENT_NAME" VARCHAR2(50)
+   );
+--------------------------------------------------------
+--  DDL for Table GUESTS
+--------------------------------------------------------
+
+  CREATE TABLE "GUESTS" 
+   (	"GUEST_ID" NUMBER(*,0), 
+	"GUEST_NAME" VARCHAR2(50), 
+	"HOST_ID" NUMBER(*,0)
+   );
+--------------------------------------------------------
+--  DDL for Table HOSTS
+--------------------------------------------------------
+
+  CREATE TABLE "HOSTS" 
+   (	"HOST_ID" NUMBER(*,0), 
+	"HOST_NAME" VARCHAR2(50)
+   );
+--------------------------------------------------------
+--  DDL for Table HOTEL
+--------------------------------------------------------
+
+  CREATE TABLE "HOTEL" 
+   (	"HOTEL_ID" NUMBER(*,0), 
+	"STREET_ADDRESS" VARCHAR2(50), 
+	"CITY" VARCHAR2(25), 
+	"STATE" VARCHAR2(2), 
+	"ZIP_CODE" VARCHAR2(5), 
+	"PHONE_NUMBER" VARCHAR2(10), 
+	"MAX_SMALL_ROOM_AVAIL" NUMBER(*,0), 
+	"MAX_MEDIUM_ROOM_AVAIL" NUMBER(*,0), 
+	"MAX_LARGE_ROOM_AVAIL" NUMBER(*,0)
+   );
+--------------------------------------------------------
+--  DDL for Table INVOICE
+--------------------------------------------------------
+
+  CREATE TABLE "INVOICE" 
+   (	"INVOICE_ID" NUMBER(*,0), 
+	"EVENT_RESERVATION_ID" NUMBER(*,0)
+   );
+--------------------------------------------------------
+--  DDL for Table ROOM_TYPE
+--------------------------------------------------------
+
+  CREATE TABLE "ROOM_TYPE" 
+   (	"ROOM_ID" NUMBER(*,0), 
+	"ROOM_TYPE" VARCHAR2(15), 
+	"ROOM_CAPACITY" NUMBER(*,0), 
+	"ROOM_PRICE" NUMBER(*,0)
+   );
+--------------------------------------------------------
+--  DDL for Table SERVICES
+--------------------------------------------------------
+
+  CREATE TABLE "SERVICES" 
+   (	"SERVICE_ID" NUMBER(*,0), 
+	"SERVICE_TYPE" VARCHAR2(50), 
+	"SERVICE_PRICE" NUMBER(*,0),
+    "PER_PERSON_OR_EVENT" VARCHAR(10)
+   );
+--------------------------------------------------------
+--  DDL for Table SERVICES_FOR_EVENTS
+--------------------------------------------------------
+
+  CREATE TABLE "SERVICES_FOR_EVENTS" 
+   (	"EVENT_RESERVATION_ID" NUMBER(*,0), 
+	"SERVICE_ID" NUMBER(*,0)
+   );
+--------------------------------------------------------
+--  DDL for Table EVENT_ROOMS
+--------------------------------------------------------    
+   CREATE TABLE "EVENT_ROOMS"
+   (    "EVENT_ID" NUMBER(*,0),
+    "HOST_ID" NUMBER(*,0),
+    "ROOM_TYPE" VARCHAR(10),
+    "ROOM_COUNT" NUMBER(*,0)
+   );
+   
+
+  ALTER TABLE "EVENT_RESERVATION" ADD PRIMARY KEY ("EVENT_RESERVATION_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table EVENT_TYPE
+--------------------------------------------------------
+
+  ALTER TABLE "EVENT_TYPE" ADD PRIMARY KEY ("EVENT_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table GUESTS
+--------------------------------------------------------
+
+  ALTER TABLE "GUESTS" ADD PRIMARY KEY ("GUEST_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table HOSTS
+--------------------------------------------------------
+
+  ALTER TABLE "HOSTS" ADD PRIMARY KEY ("HOST_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table HOTEL
+--------------------------------------------------------
+
+  ALTER TABLE "HOTEL" ADD PRIMARY KEY ("HOTEL_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table INVOICE
+--------------------------------------------------------
+
+  ALTER TABLE "INVOICE" ADD PRIMARY KEY ("INVOICE_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table ROOM_TYPE
+--------------------------------------------------------
+
+  ALTER TABLE "ROOM_TYPE" ADD PRIMARY KEY ("ROOM_ID") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table SERVICES
+--------------------------------------------------------
+
+  ALTER TABLE "SERVICES" ADD PRIMARY KEY ("SERVICE_ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table GUESTS
+--------------------------------------------------------
+
+  ALTER TABLE "GUESTS" ADD CONSTRAINT "HOST_ID" FOREIGN KEY ("HOST_ID")
+	  REFERENCES "HOSTS" ("HOST_ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table INVOICE
+--------------------------------------------------------
+
+  ALTER TABLE "INVOICE" ADD CONSTRAINT "EVENT_RESERVATION_ID_FK" FOREIGN KEY ("EVENT_RESERVATION_ID")
+	  REFERENCES "EVENT_RESERVATION" ("EVENT_RESERVATION_ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table SERVICES_FOR_EVENTS
+--------------------------------------------------------
+
+  ALTER TABLE "SERVICES_FOR_EVENTS" ADD CONSTRAINT "EVENT_RESERVATION_ID" FOREIGN KEY ("EVENT_RESERVATION_ID")
+	  REFERENCES "EVENT_RESERVATION" ("EVENT_RESERVATION_ID") ENABLE;
+ 
+  ALTER TABLE "SERVICES_FOR_EVENTS" ADD CONSTRAINT "SERVICE_ID" FOREIGN KEY ("SERVICE_ID")
+	  REFERENCES "SERVICES" ("SERVICE_ID") ENABLE;
+    
+--------------------------------------------------------
+--  Ref Constraints for Table EVENT_RESERVATION
+--------------------------------------------------------
+  ALTER TABLE "EVENT_RESERVATION" ADD CONSTRAINT "EVENT_ID" FOREIGN KEY ("EVENT_ID")
+	  REFERENCES "EVENT_TYPE" ("EVENT_ID") ENABLE;
+      
+  ALTER TABLE "EVENT_RESERVATION" ADD CONSTRAINT "HOTEL_ID" FOREIGN KEY ("HOTEL_ID")
+	  REFERENCES "HOTEL" ("HOTEL_ID") ENABLE;  
+      
+  ALTER TABLE "EVENT_RESERVATION" ADD CONSTRAINT "HOST_ID_EVENT_FK" FOREIGN KEY ("HOST_ID")
+	  REFERENCES "HOSTS" ("HOST_ID") ENABLE;  
+
+--------------------------------------------------------
+--  Ref Constraints for Table EVENT_ROOMS
+--------------------------------------------------------    
+  ALTER TABLE "EVENT_ROOMS" ADD CONSTRAINT "EVENT_ROOMS_EVENT_ID_FK" FOREIGN KEY ("EVENT_ID")
+	  REFERENCES "EVENT_TYPE" ("EVENT_ID") ENABLE;  
+      
+  ALTER TABLE "EVENT_ROOMS" ADD CONSTRAINT "EVENT_ROOMS_HOST_ID_FK" FOREIGN KEY ("HOST_ID")
+	  REFERENCES "HOSTS" ("HOST_ID") ENABLE;  
+        
+create sequence host_id_seq increment by 1 start with 1;
+create sequence guest_id_seq increment by 1 start with 1;
+create sequence hotel_id_seq increment by 1 start with 1;
+create sequence service_id_seq increment by 1 start with 1;
+create sequence room_id_seq increment by 1 start with 1;
